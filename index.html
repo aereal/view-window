@@ -13,7 +13,7 @@
         var viewWindow = new ViewWindow(window);
         var enterView = _.throttle(function () {
           $longs.each(function () {
-            if (ViewWindow.viewable(this)) $(this).trigger('enterview');
+            if (viewWindow.viewable(this)) $(this).trigger('enterview');
           });
         }, waitTime);
 
