@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>ViewWindow</title>
+    <script src="//underscorejs.org/underscore-min.js" type="text/javascript"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js" type="text/javascript"></script>
+    <script src="//coffeescript.org/extras/coffee-script.js" type="text/javascript"></script>
+    <script type="text/javascript" src="src/view-window.js"></script>
+    <script type="text/coffeescript">
+      $ ->
+        $longs = $('.long')
+        waitTime = 1000
+        viewWindow = new ViewWindow(window)
+        enterView = _.throttle ->
+          $(e).trigger('enterview') for e in $longs when viewWindow.viewable(e)
+        , waitTime
+
+        $longs.each ->
+          $(@).on 'enterview', _.once ->
+            $(@).animate(opacity: 0, -> $(@).hide())
+
+        _.delay enterView, 1000
+
+        $(window).on 'scroll', enterView
+    </script>
+    <style type="text/css">
+      .long {
+        height: 1280px;
+      }
+      #this {
+        background-color: red;
+      }
+      #is {
+        background-color: green;
+      }
+      #long-paragraph {
+        background-color: blue;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>onenterscreen.js</h1>
+    <p id="this" class="long">This</p>
+    <p id="is" class="long">is</p>
+    <p id="long-paragraph" class="long">long paragraph.</p>
+  </body>
+</html>
